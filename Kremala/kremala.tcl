@@ -1,87 +1,66 @@
 #!/usr/bin/tclsh
 
-set string "Sentoni"
-set secret_word [split $string {}]
-set hyphened_secret_word [split $string {}]
-# puts [lreplace $secret_word 1 1 _]
-# puts [lreplace $secret_word 1 1 _]
-# puts [lreplace $secret_word 2 2 _]
-
-for {set i 1} {$i < [expr [llength $hyphened_secret_word] -1]} {incr i} {
-  set hyphened_secret_word [lreplace $hyphened_secret_word $i $i _]
-}
-# puts $hyphened_secret_word
-# puts $secret_word
-
-# proc splitAwordIntoLetters {a_string} {
-#   set secret_word [split $a_string {}]
-#   # puts [llength $secret_word]
-#   if {[llength $secret_word] > 10} {
-#     puts "Too many characters"
-#     exit
-#   } else {
-#     return $secret_word
-#   }
-# }
-
+source Kremala_procs/kremala_procs.tcl
 
 set number_of_tries 0
 
+set words [getWords words.txt]
+set chosen_word [randomChosenWord $words]
+
+set secret_word [splitAwordIntoLetters $chosen_word]
+set hyphened_secret_word [createHyphenedSecretWordFromString $secret_word]
+puts $hyphened_secret_word
+set given_letters_list {}
 
 
-while {$number_of_tries < 6} {
-  puts "Give me a letter: "
+
+while {$number_of_tries <= 6} {
   set exists_counter 0
-  gets stdin letter
 
-  for {set i 1} {$i < [expr [llength $secret_word] -1]} {incr i} {
-    # set letter_exists False
-    if {$letter == [lindex $secret_word $i]} {
-      # set letter_exists True
-      set hyphened_secret_word [lreplace $hyphened_secret_word $i $i $letter]
-      incr exists_counter
+  set letter [giveAletter]
 
-    }
-
-
-  # puts $hyphened_secret_word
+  if {[isLetterUsed $letter $given_letters_list]} {
+    puts "You have used this letter. Please give another. "
+    continue
+  } else {
+    lappend given_letters_list $letter
   }
-  if {$exists_counter >= 1} {
+
+  puts "You have used the letters \{$given_letters_list\}"
+
+  if {[letterExists $letter]} {
     puts "The letter '$letter' exists $exists_counter times. "
+  } else {
+    puts "The letter '$letter' does not exist. "
+    incr number_of_tries
   }
-  puts $hyphened_secret_word
+
+  # puts "The number_of_tries are $number_of_tries. "
+
+  remainingNumberOfTries $number_of_tries
+  puts "$hyphened_secret_word\n##########################\n\n"
+
+  # if {[checksIfYouWin $hyphened_secret_word $secret_word]} {
+  #   playAgain
+  # }
+
+
+
+
+
+
+
+
+
+  # if {[playAgain] == Yes} {
+  #   puts "Oraios! "
+  # }
+
+
+
+
+
+
+
+
 }
-# proc giveAletter {} {
-#   puts "Give a letter: "
-#   gets stdin letter
-# }
-
-# if {$exists_counter == 1} {
-#   puts "The letter '$letter' exists. "
-#   continue
-# } elseif {$exists_counter > 1} {
-#   puts "The letter '$letter' exists $exists_counter times. "
-#   }
-
-
-
-
-
-  # if {$exists_counter > 1} {
-  #   puts "The letter '$letter' exists $exists_counter times. "
-  # } elseif {$exists_counter == 1} {
-  #   puts "The letter '$letter' exists. "
-  # }
-
-
-
-
-
-
-  # if {$exists_counter == 1} {
-  #   puts "The letter '$letter' exists. "
-  #   continue
-  # } elseif {$exists_counter > 1} {
-  #   puts "The letter '$letter' exists $exists_counter times. "
-  # }
-  #}
