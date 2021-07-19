@@ -10,10 +10,11 @@ set chosen_word [randomChosenWord $words]
 set secret_word [splitAwordIntoLetters $chosen_word]
 set hyphened_secret_word [createHyphenedSecretWordFromString $secret_word]
 # puts $secret_word\n
-puts $hyphened_secret_word
+# puts $hyphened_secret_word
 set given_letters_list {}
 
-
+setup
+puts $hyphened_secret_word
 
 while {$number_of_tries <= 6} {
   set exists_counter 0
@@ -42,27 +43,29 @@ while {$number_of_tries <= 6} {
   set last_try [lastTry $number_of_tries $secret_word $hyphened_secret_word]
 
   if {$last_try == False} {
-    puts "You lose... The word was $secret_word. "
+    puts "You lose... The word was [join '$secret_word' ""]. "
     if {[playAgain]} {
-      reset
+      setup
+      # reset
+      puts $hyphened_secret_word
+      # setup $number_of_tries $words $chosen_word $secret_word $hyphened_secret_word $given_letters_list
       continue
     } else {
       exit
     }
   }
 
-
-
-
-
-  # if {[checksIfYouWin $hyphened_secret_word $secret_word]} {
-  #   if {[playAgain]} {
-  #     reset
-  #     continue
-  # } else {
-  #   exit
-  #   }
-  # }
+  if {[checksIfYouWin $hyphened_secret_word $secret_word]} {
+    if {[playAgain]} {
+      setup
+      # reset
+      puts $hyphened_secret_word
+      # setup $number_of_tries $words $chosen_word $secret_word $hyphened_secret_word $given_letters_list
+      continue
+  } else {
+    exit
+    }
+  }
 
 
 
