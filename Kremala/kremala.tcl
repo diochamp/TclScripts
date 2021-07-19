@@ -39,14 +39,30 @@ while {$number_of_tries <= 6} {
   remainingNumberOfTries $number_of_tries
   puts "$hyphened_secret_word\n##########################\n\n"
 
-  if {[checksIfYouWin $hyphened_secret_word $secret_word]} {
+  set last_try [lastTry $number_of_tries $secret_word $hyphened_secret_word]
+
+  if {$last_try == False} {
+    puts "You lose... The word was $secret_word. "
     if {[playAgain]} {
       reset
       continue
-  } else {
-    exit
+    } else {
+      exit
     }
   }
+
+
+
+
+
+  # if {[checksIfYouWin $hyphened_secret_word $secret_word]} {
+  #   if {[playAgain]} {
+  #     reset
+  #     continue
+  # } else {
+  #   exit
+  #   }
+  # }
 
 
 
