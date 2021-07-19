@@ -9,6 +9,7 @@ set chosen_word [randomChosenWord $words]
 
 set secret_word [splitAwordIntoLetters $chosen_word]
 set hyphened_secret_word [createHyphenedSecretWordFromString $secret_word]
+# puts $secret_word\n
 puts $hyphened_secret_word
 set given_letters_list {}
 
@@ -35,31 +36,17 @@ while {$number_of_tries <= 6} {
     incr number_of_tries
   }
 
-  # puts "The number_of_tries are $number_of_tries. "
-
   remainingNumberOfTries $number_of_tries
   puts "$hyphened_secret_word\n##########################\n\n"
 
-  # if {[checksIfYouWin $hyphened_secret_word $secret_word]} {
-  #   playAgain
-  # }
-
-
-
-
-
-
-
-
-
-  # if {[playAgain] == Yes} {
-  #   puts "Oraios! "
-  # }
-
-
-
-
-
+  if {[checksIfYouWin $hyphened_secret_word $secret_word]} {
+    if {[playAgain]} {
+      reset
+      continue
+  } else {
+    exit
+    }
+  }
 
 
 
