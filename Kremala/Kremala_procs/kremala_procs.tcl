@@ -13,6 +13,22 @@ proc kremalaArray {} {
   return [array get kremala]
 }
 
+proc initiate {categories} {
+  upvar 1 chosen_category chosen_category
+  while True {
+
+    set chosen_category [chooseCategory $categories]
+    if {![chosenCategoryValidityCheck $chosen_category $categories]} { ; # puts $kremala($chosen_category)
+      puts "The category you chose does not exist, please try again.\n "
+      continue
+    } else {
+      puts "Ok"
+      break
+    }
+  }
+  # return
+}
+
 proc chooseCategory {categories} { ; # Promts the user to choose one of the array categories (keys).
   # upvar 1 kremala kremala
   puts "Choose one of the following categories:\n\n     \{$categories\}\n"
@@ -34,10 +50,18 @@ proc chosenCategoryValidityCheck {chosen_category categories} { ; # Validates th
 }
 
 proc candidateWords {array_get_kremala chosen_category} { ; # Returns the words belonging to the category the user chose.
+  puts "Inside this proc.\n "
+  puts "chosen_category is $chosen_category\n"
+
   upvar 1 kremala kremala
+  puts $kremala($chosen_category)
+  puts [llength [array get kremala]]
+  puts [array get kremala]
   # upvar 1 chosen_category chosen_category
-  for {set i 0} {$i < [llength $array_get_kremala]} {incr i} {
+  for {set i 0} {$i < [llength [array get kremala]]} {incr i} {
+    puts $i
     if {[expr $i % 2 != 0]} {
+      puts "Helloooooo -> $i -> [lindex [array get kremala] $i]"
       set candidate_words $kremala($chosen_category)
     }
   }
@@ -138,11 +162,13 @@ proc playAgain {} {
   return $flag
 }
 
-proc setup {} {
+proc setup {chosen_category} {
 
+  upvar 1 kremala kremala
+  # upvar 1 chosen_category chosen_category
   upvar 1 given_letters_list given_letters_list
   upvar 1 number_of_tries number_of_tries
-  upvar 1 candidate_words candidate_words
+  # upvar 1 candidate_words candidate_words
   # upvar 1 words words
   upvar 1 chosen_word chosen_word
   upvar 1 secret_word secret_word
@@ -151,14 +177,18 @@ proc setup {} {
 
   set number_of_tries 0
 
+  set given_letters_list {}
+
+  set candidate_words [candidateWords [array get kremala] $chosen_category]
   # set words [getWords words.txt]
   set chosen_word [randomChosenWord $candidate_words]
 
   set secret_word [splitAwordIntoLetters $chosen_word]
+
   set hyphened_secret_word [createHyphenedSecretWordFromString $secret_word]
   # puts $secret_word\n
-  # puts $hyphened_secret_word
-  set given_letters_list {}
+  puts $hyphened_secret_word
+
 
 }
 
