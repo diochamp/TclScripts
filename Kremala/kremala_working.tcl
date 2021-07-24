@@ -7,31 +7,36 @@ array set kremala [kremalaArray]
 
 set categories [array names kremala]
 
-while True {
+initiate $categories
+puts $chosen_category
 
-  set chosen_category [chooseCategory $categories]
-  if {![chosenCategoryValidityCheck $chosen_category $categories]} { ; # puts $kremala($chosen_category)
-    puts "The category you chose does not exist, please try again.\n "
-    continue
-  } else {
-    break
-  }
-}
+setup $chosen_category
+# while True {
+#
+#   set chosen_category [chooseCategory $categories]
+#   if {![chosenCategoryValidityCheck $chosen_category $categories]} { ; # puts $kremala($chosen_category)
+#     puts "The category you chose does not exist, please try again.\n "
+#     continue
+#   } else {
+#     break
+#   }
+# }
 
-set number_of_tries 0
-
-set given_letters_list {}
-
-set candidate_words [candidateWords [array get kremala] $chosen_category]
-
-set chosen_word [randomChosenWord $candidate_words]
-
-set secret_word [splitAwordIntoLetters $chosen_word]
-
-set hyphened_secret_word [createHyphenedSecretWordFromString $secret_word]
-puts $hyphened_secret_word
-
-set number_of_tries 0
+# set number_of_tries 0
+#
+# set given_letters_list {}
+#
+# set candidate_words [candidateWords [array get kremala] $chosen_category]
+# puts $candidate_words
+#
+# set chosen_word [randomChosenWord $candidate_words]
+#
+# set secret_word [splitAwordIntoLetters $chosen_word]
+#
+# set hyphened_secret_word [createHyphenedSecretWordFromString $secret_word]
+# puts $hyphened_secret_word
+#
+# set number_of_tries 0
 
 while {$number_of_tries <= 6} {
   set exists_counter 0
@@ -62,20 +67,36 @@ while {$number_of_tries <= 6} {
   if {$last_try == False} {
     puts "You lose... The word was [join '$secret_word' ""]. "
     if {[playAgain]} {
-    setup
-    puts $hyphened_secret_word
-    continue
-  } else {
-    exit
-  }
+      initiate $categories
+      setup $chosen_category
+      # puts $hyphened_secret_word
+      continue
+    } else {
+      exit
+    }
 
   }
 
   if {[checksIfYouWin $hyphened_secret_word $secret_word]} {
     if {[playAgain]} {
-      setup
-      # reset
-      puts $hyphened_secret_word
+      initiate $categories
+
+      # set number_of_tries 0
+      #
+      # set given_letters_list {}
+      #
+      # set candidate_words [candidateWords [array get kremala] $chosen_category]
+      # puts $candidate_words
+      #
+      # set chosen_word [randomChosenWord $candidate_words]
+      #
+      # set secret_word [splitAwordIntoLetters $chosen_word]
+      #
+      # set hyphened_secret_word [createHyphenedSecretWordFromString $secret_word]
+
+      setup $chosen_category
+
+      # puts $hyphened_secret_word
       # setup $number_of_tries $words $chosen_word $secret_word $hyphened_secret_word $given_letters_list
       continue
   } else {
