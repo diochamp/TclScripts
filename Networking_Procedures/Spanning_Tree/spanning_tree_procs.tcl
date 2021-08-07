@@ -1,22 +1,22 @@
 #!/usr/bin/tclsh
 
-proc createBridgeIds {bridge_priorities_list system_extension_id_list bridge_IDs_list} {
-  foreach bridge_priority $bridge_priorities_list system_extension_id $system_extension_id_list {
+proc createBridgeIds {tmp_bridge_priorities_list system_extension_id_list} {
+  foreach bridge_priority $tmp_bridge_priorities_list system_extension_id $system_extension_id_list {
     # puts "Bridge priority is \"$bp\" and system extension id is \"$ext\". "
-    lappend bridge_IDs_list [expr $bridge_priority + $system_extension_id]
+    lappend bridge_priorities_list [expr $bridge_priority + $system_extension_id]
   }
-  return $bridge_IDs_list
+  return $bridge_priorities_list
 }
 
-proc checkIfBridgeIdsAreEqual {bridge_IDs_list bridge_ids_are_equal} {
-  set are_equal "The bridge Ids are equal. "
+proc checkIfBridgeIdsAreEqual {bridge_IDs_list} {
+  set bridge_ids_are_equal True
   for {set i 0} {$i < [expr [llength $bridge_IDs_list] - 1]} {incr i} {
     if {[lindex $bridge_IDs_list $i] != [lindex $bridge_IDs_list [expr $i + 1]]} {
-      set are_equal "The bridge Ids are not equal. "
-      return $are_equal
+      set bridge_ids_are_equal False
+      return $bridge_ids_are_equal
     }
   }
-  return $are_equal
+  return $bridge_ids_are_equal
 }
 
 proc findLargestBid {bridge_IDs_list largest_BID} {
@@ -28,11 +28,40 @@ proc findLargestBid {bridge_IDs_list largest_BID} {
   return $largest_BID
 }
 
+proc findLowestBid {bridge_IDs_list lowest_BID} {
+  foreach bridge_id $bridge_IDs_list {
+    if {$bridge_id < $lowest_BID} {
+      set lowest_BID $bridge_id
+    }
+  }
+  return $lowest_BID
+}
+
+proc howManyTimesLowestBidExists {bridge_IDs_list lowest_BID} {
+  set lowest_BID_counter 0
+  foreach bridge_id $bridge_IDs_list {
+    if {$bridge_id == $lowest_BID} {
+      incr lowest_BID_counter
+    }
+  }
+  return $lowest_BID_counter
+}
+
 proc replaceValuesEqualToLargestBidWithFoo {bridge_IDs_list largest_BID} {
   for {set i 0} {$i < [llength $bridge_IDs_list]} {incr i} {
     if {[lindex $bridge_IDs_list $i] == $largest_BID} {
       set x [lsearch $bridge_IDs_list [lindex $bridge_IDs_list $i]]
       lset bridge_IDs_list $x foo
+    }
+  }
+  return $bridge_IDs_list
+}
+
+proc replaceBidValuesDifferentToLowestBid {bridge_IDs_list lowest_BID} {
+  for {set i 0} {$i < [llength $bridge_IDs_list]} {incr i} {
+    if {[lindex $bridge_IDs_list $i] > $lowest_BID} {
+      # set x [lsearch $bridge_IDs_list [lindex $bridge_IDs_list $i]]
+      lset bridge_IDs_list $i foo
     }
   }
   return $bridge_IDs_list
@@ -46,16 +75,14 @@ proc defineSwitchesThatCannotBeRootBridges {bridge_IDs_list not_candidate_root_b
 proc replaceNonCandidateSwitchesMac {bridge_IDs_list mac_addresses_list} {
   for {set i 0} {$i < [llength $bridge_IDs_list]} {incr i} {
     if {[lindex $bridge_IDs_list $i] == "foo"} {
-      set y [lsearch $mac_addresses_list [lindex $mac_addresses_list $i]]
-      puts $y
-      lset mac_addresses_list $y gggg.gggg.gggg
+      # set y [lsearch $mac_addresses_list [lindex $mac_addresses_list $i]]
+      # puts $y
+      lset mac_addresses_list $i gggg.gggg.gggg
       # puts $mac_addresses_list
     }
   }
   return $mac_addresses_list
 }
-
-
 
 proc compareTwoMacAddresses {mac_addresses_list} {
   set mac_addresses_list [string map {. " "} $mac_addresses_list]
