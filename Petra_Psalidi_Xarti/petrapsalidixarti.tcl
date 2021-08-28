@@ -27,13 +27,7 @@ while {$number_of_plays <= 5} {
 
   array set Rules [createRulesArray]
 
-  if {$available_choices($user_choice) == $computer_choice} {
-    puts "Tie. "
-  } elseif {$Rules($available_choices($user_choice)) == $computer_choice} {
-    puts "You win. "
-  } else {
-    puts "You lose. "
-  }
+  checkWhoWins available_choices Rules $user_choice $computer_choice
 
   # puts $Rules($available_choices($user_choice))
 
