@@ -44,3 +44,12 @@ proc randomChoice {tmp_list} {
   set random_choice [lindex $tmp_list $random_index]
   return $random_choice
 }
+
+proc createRulesArray {} {
+  array set Rules {
+    petra {psalidi}
+    psalidi {xarti}
+    xarti {petra}
+  }
+  return [array get Rules]
+}
