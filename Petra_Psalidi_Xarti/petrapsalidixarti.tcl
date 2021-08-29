@@ -6,6 +6,8 @@ array set available_choices [petraPsalidiXartiArray]
 
 set number_of_plays 1
 
+array set Rules [createRulesArray]
+
 array set Results [createResultsArray]
 
 while {$number_of_plays <= 5} {
@@ -27,14 +29,13 @@ while {$number_of_plays <= 5} {
   set computer_choice [randomChoice $tmp_list]
   puts "Computer chose \"$computer_choice\""
 
-  array set Rules [createRulesArray]
-
   checkWhoWinsPerPlay available_choices Rules Results $user_choice $computer_choice $number_of_plays
 
   parray Results
 
-  # puts $Rules($available_choices($user_choice))
-
+  if {$number_of_plays == 5} {
+    findTheWinner Results
+  }
 
   incr number_of_plays
 }

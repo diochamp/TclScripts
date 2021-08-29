@@ -81,3 +81,15 @@ proc checkWhoWinsPerPlay {array_name_av_ch array_name_Rul array_name_Res user_ch
     incr Results(computer)
   }
 }
+
+proc findTheWinner {array_name_Res} {
+  upvar $array_name_Res Results
+
+  if {$Results(user) > $Results(computer)} {
+    puts "You win! "
+  } elseif {$Results(user) < $Results(computer)} {
+    puts "You lose... "
+  } else {
+    puts "We have a tie! "
+  }
+}
