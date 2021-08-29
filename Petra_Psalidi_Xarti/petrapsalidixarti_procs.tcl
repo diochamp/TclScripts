@@ -57,12 +57,22 @@ proc createRulesArray {} {
 proc checkWhoWins {array_name_av_ch array_name_Rul user_choice computer_choice} {
   upvar $array_name_av_ch available_choices
   upvar $array_name_Rul Rules
+  upvar 1 ties ties
+  upvar 1 user_wins user_wins
+  upvar 1 computer_wins computer_wins
+
 
   if {$available_choices($user_choice) == $computer_choice} {
     puts "Tie. "
+    incr ties
   } elseif {$Rules($available_choices($user_choice)) == $computer_choice} {
     puts "You win. "
+    incr user_wins
   } else {
     puts "You lose. "
+    incr computer_wins
   }
+  puts "Ties = $ties "
+  puts "User wins = $user_wins "
+  puts "Computer wins = $computer_wins "
 }

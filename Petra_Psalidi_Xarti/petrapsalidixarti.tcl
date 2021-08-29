@@ -6,6 +6,10 @@ array set available_choices [petraPsalidiXartiArray]
 
 set number_of_plays 1
 
+set ties 0
+set user_wins 0
+set computer_wins 0
+
 while {$number_of_plays <= 5} {
   set user_choice [makeYourChoice available_choices]
 
