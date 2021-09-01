@@ -40,13 +40,14 @@ while {$rounds <=3} {
     parray Results
 
     if {$number_of_plays == 5} {
-      findTheWinner Results
+      findTheWinner Results $rounds
       incr rounds
       set number_of_plays 1
+      array set Results [createResultsArray]
       break
     }
 
     incr number_of_plays
   }
-  
+
 }
