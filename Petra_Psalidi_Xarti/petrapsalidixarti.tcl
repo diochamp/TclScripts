@@ -12,6 +12,8 @@ array set Rules [createRulesArray]
 
 array set Results [createResultsArray]
 
+array set master_results [createMasterResultsArray]
+
 while {$rounds <=3} {
 
   puts "Round: $rounds"
@@ -38,6 +40,9 @@ while {$rounds <=3} {
     checkWhoWinsPerPlay available_choices Rules Results $user_choice $computer_choice $number_of_plays
 
     parray Results
+    puts "\n"
+
+    populateMasterResultsArray Results master_results $number_of_plays
 
     if {$number_of_plays == 5} {
       findTheWinner Results $rounds

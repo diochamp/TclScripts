@@ -63,6 +63,15 @@ proc createResultsArray {} {
   return [array get Results]
 }
 
+proc createMasterResultsArray {} {
+  array set master_results {
+    ties {0}
+    user {0}
+    computer {0}
+  }
+  return [array get master_results]
+}
+
 proc checkWhoWinsPerPlay {array_name_av_ch array_name_Rul array_name_Res user_choice computer_choice number_of_plays} {
   upvar $array_name_av_ch available_choices
   upvar $array_name_Rul Rules
@@ -86,12 +95,26 @@ proc findTheWinner {array_name_Res rounds} {
   upvar $array_name_Res Results
 
   puts "In round $rounds: "
-  
+
   if {$Results(user) > $Results(computer)} {
     puts "You win! "
   } elseif {$Results(user) < $Results(computer)} {
     puts "You lose... "
   } else {
     puts "We have a tie! "
+  }
+}
+
+proc populateMasterResultsArray {array_name_Res array_name_master_results number_of_plays} {
+  upvar $array_name_Res Results
+  upvar $array_name_master_results master_results
+
+  if {$number_of_plays == 5} {
+    puts "Start"
+    set master_results(ties) [expr $master_results(ties) + $Results(ties)]
+    set master_results(user) [expr $master_results(user) + $Results(user)]
+    set master_results(computer) [expr $master_results(computer) + $Results(computer)]
+    parray master_results
+    puts "End"
   }
 }
