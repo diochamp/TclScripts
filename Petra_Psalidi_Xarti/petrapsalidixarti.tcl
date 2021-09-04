@@ -46,6 +46,10 @@ while {$rounds <=3} {
 
     if {$number_of_plays == 5} {
       findTheWinner Results $rounds
+      if {[askToPlayAgain $rounds $number_of_plays]} {
+        reset Results
+        break
+      }
       incr rounds
       set number_of_plays 1
       array set Results [createResultsArray]

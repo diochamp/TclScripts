@@ -110,11 +110,34 @@ proc populateMasterResultsArray {array_name_Res array_name_master_results number
   upvar $array_name_master_results master_results
 
   if {$number_of_plays == 5} {
-    puts "Start"
     set master_results(ties) [expr $master_results(ties) + $Results(ties)]
     set master_results(user) [expr $master_results(user) + $Results(user)]
     set master_results(computer) [expr $master_results(computer) + $Results(computer)]
     parray master_results
-    puts "End"
   }
+}
+
+proc askToPlayAgain {rounds number_of_plays} {
+  set play_again False
+  if {$rounds == 3} {
+    if {$number_of_plays == 5} {
+      puts "Do you want to play again?"
+      puts "Type 'Yes' if so, or press any key and hit enter to continue. "
+      gets stdin answer
+      if {$answer == "Yes"} {
+        set play_again True
+      }
+    }
+  }
+  return $play_again
+}
+
+proc reset {array_name_Res} {
+  upvar $array_name_Res Results
+  upvar 1 rounds rounds
+  upvar 1 number_of_plays number_of_plays
+
+  set rounds 1
+  set number_of_plays 1
+  array set Results [createResultsArray]
 }
