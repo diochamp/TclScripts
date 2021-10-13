@@ -4,6 +4,12 @@ proc decimalToBinaryConverter {decimal_number} { ; # Works for decimal numbers f
 
   set sum 0 ; # Saves the result of:  set sum [expr [lindex $list $i] + $sum]
 
+  if {$decimal_number == 0} {
+    for {set i 0} {$i < 8} {incr i} {
+      lappend final_list 0
+    }
+  }
+
   for {set i 62} {$i >= 0} {incr i -1} {
     lappend list [expr int(pow(2,$i))]
     lappend tmplist 0
@@ -29,7 +35,7 @@ proc decimalToBinaryConverter {decimal_number} { ; # Works for decimal numbers f
 
 }
 
-set bin [decimalToBinaryConverter 1000000]
+# set bin [decimalToBinaryConverter 1000000]
 # puts $bin
 
 
