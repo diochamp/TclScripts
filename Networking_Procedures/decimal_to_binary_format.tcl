@@ -5,7 +5,7 @@ proc decimalToBinaryConverter {decimal_number} { ; # Works for decimal numbers f
   source ip_to_binary_procs.tcl
 
   set sum 0 ; # Saves the result of:  set sum [expr [lindex $list $i] + $sum]
-
+  # puts "decimal number is $decimal_number"
   if {$decimal_number == 0} {
     for {set i 0} {$i < 8} {incr i} {
       lappend final_list 0
@@ -33,6 +33,7 @@ proc decimalToBinaryConverter {decimal_number} { ; # Works for decimal numbers f
   }
 
   set binary_number $final_list
+  # puts "binary number is $binary_number"
 
   set incr_of_eight [findIncrementsOfEight]
   set smallest_incr [findSmallestIncrement $incr_of_eight $binary_number]
@@ -45,4 +46,4 @@ proc decimalToBinaryConverter {decimal_number} { ; # Works for decimal numbers f
   return $dec
 
 }
-puts [decimalToBinaryConverter 10]
+# puts [decimalToBinaryConverter 10]

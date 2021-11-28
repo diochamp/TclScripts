@@ -1,6 +1,6 @@
 #!/usr/bin/tclsh
 
-source decimal_to_binary.tcl
+# source decimal_to_binary.tcl
 
 proc findIncrementsOfEight {} {
   set incr_of_eight {}
