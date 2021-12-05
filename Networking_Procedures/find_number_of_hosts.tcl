@@ -1,20 +1,15 @@
 #!/usr/bin/tclsh
 
-source decimal_to_binary_format.tcl
+proc findNumberOfHosts {subnet_mask} {
+  source sub_mask_to_binary.tcl
 
-# set ip {192.168.10.1}
-# set mask 24
-#
-# set network [concat $ip $mask]
-# set network [string map {" " /} $network]
-#
-# set ip [split $ip .]
-# # puts $ip
-# # exit
-
-set ip {10 10 10 10}
-
-foreach oct $ip {
-  puts "oct = $oct"
-  puts [decimalToBinaryConverter $oct]
+  set mask [subMaskToBinary $subnet_mask]
+  set nummber_of_zeros {}
+  for {set i 0} {$i <= 31} {incr i} {
+    if {[lindex $mask $i] == 0} {
+      lappend nummber_of_zeros [lindex $mask $i]
+    }
+  }
+  set number_of_usable_hosts [expr int(pow(2,[llength $nummber_of_zeros])) -2]
+  return $number_of_usable_hosts
 }
