@@ -18,15 +18,24 @@ proc findIncrementsOfNumber {number} {
 }
 
 set ip_address {192.168.10.10}
-set mask 25
+set mask 23
 
 set ip_address [split $ip_address .]
-puts "Ip address is \"$ip_address\""
+# puts "Ip address is \"$ip_address\""
+puts "Ip address is [string map {" " .} \"$ip_address\"]"
 
-set first_octet [lindex $ip_address 0]
-set second_octet [lindex $ip_address 1]
-set third_octet [lindex $ip_address 2]
-set fourth_octet [lindex $ip_address 3]
+set first_octet [lindex $ip_address 0] ; # Represents the first decimal of the ip address
+set second_octet [lindex $ip_address 1] ; # Represents the second decimal of the ip address
+set third_octet [lindex $ip_address 2] ; # Represenets the third decimal of the ip address
+set fourth_octet [lindex $ip_address 3] ; # Represents the fourth decimal of the ip address
+
+################# EXAMPLE ##########################
+#   If ip address is 192.168.1.10:                 #
+#   the first_octet is 192                         #
+#   the second_octet is 168                        #
+#   the third_octet is 1                           #
+#   the fourth_octet is 10                         #
+# ############### END OF THE EXAMPLE ###############
 
 puts "Subnet mask is \"$mask\""
 
@@ -43,8 +52,16 @@ set mask_bin [subMaskToBinary $mask]
 puts "Subnet mask in binary is \"$mask_bin\""
 
 set interesting_octet {1 2 3 4}
+################# EXAMPLE ############################
+#   If ip address is 192.168.1.10:                   #
+#   interesting_octet 1 means the first octet (192)  #
+#   interesting_octet 2 means the second octet (168) #
+#   interesting_octet 3 means the third octet (1)    #
+#   interesting_octet 4 means the fourth octet (10)  #
+# ############### END OF THE EXAMPLE #################
 
 array set subnet_table {
+  0 256
   1 128
   2 64
   3 32
@@ -55,25 +72,46 @@ array set subnet_table {
   8 1
 }
 
-if {$mask > 0 && ($mask <= 8)} {
+if {$mask == 24} {
+  set low_limit $mask
+  set interesting_octet [lindex $interesting_octet end]
+  set octet_to_compare $fourth_octet
+  puts "Interesting octet is \"$interesting_octet\""
+} elseif {$mask == 16} {
+  set low_limit $mask
+  set interesting_octet [lindex $interesting_octet [expr [llength $interesting_octet] -2]]
+  set octet_to_compare $third_octet
+  puts "Interesting octet is \"$interesting_octet\""
+} elseif {$mask == 8} {
+  set low_limit $mask
+  set interesting_octet [lindex $interesting_octet [expr [llength $interesting_octet] -3]]
+  set octet_to_compare $second_octet
+  puts "Interesting octet is \"$interesting_octet\""
+} elseif {$mask == 32} {
+  set ip_address [string map {" " .} $ip_address]
+  puts "$ip_address\/$mask is a host. "
+  exit
+}
+
+if {$mask > 0 && ($mask < 8)} {
   set low_limit 0
   set upper_limit 8
   set interesting_octet [lindex $interesting_octet 0]
   set octet_to_compare $first_octet
   puts "Interesting octet is \"$interesting_octet\""
-} elseif {$mask > 8 && ($mask <= 16)} {
+} elseif {$mask > 8 && ($mask < 16)} {
   set low_limit 8
   set upper_limit 16
   set interesting_octet [lindex $interesting_octet 1]
   set octet_to_compare $second_octet
   puts "interesting_octet is \"$interesting_octet\""
-} elseif {$mask > 16 && ($mask <= 24)} {
+} elseif {$mask > 16 && ($mask < 24)} {
   set low_limit 16
   set upper_limit 24
   set interesting_octet [lindex $interesting_octet 2]
   set octet_to_compare $third_octet
   puts "Interesting octet is \"$interesting_octet\""
-} elseif {$mask > 24 && ($mask <= 32)} {
+} elseif {$mask > 24 && ($mask < 32)} {
   set low_limit 24
   set upper_limit 32
   set interesting_octet [lindex $interesting_octet 3]
