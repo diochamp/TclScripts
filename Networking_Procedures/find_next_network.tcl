@@ -7,7 +7,7 @@ proc findIncrementsOfNumber {number} {
   set incr_of_num 0
   set stath $number
   set tmp 0
-  for {set i 0} {$i < 63} {incr i} {
+  for {set i 0} {$i < 255} {incr i} {
     set tmp [expr $tmp + $stath]
     lappend incr_of_num $tmp
     if {[lindex $incr_of_num end] >= 256} {
@@ -18,8 +18,7 @@ proc findIncrementsOfNumber {number} {
 }
 
 set ip_address {192.168.10.10}
-set mask 23
-
+set mask 7
 set ip_address [split $ip_address .]
 # puts "Ip address is \"$ip_address\""
 puts "Ip address is [string map {" " .} \"$ip_address\"]"
@@ -46,7 +45,7 @@ foreach oct $ip_address {
 }
 
 set ip_to_binary [join $ip_to_binary " "]
-puts "Ip address in binary is \"$ip_to_binary\""
+puts " Ip address in binary is \"$ip_to_binary\""
 
 set mask_bin [subMaskToBinary $mask]
 puts "Subnet mask in binary is \"$mask_bin\""
@@ -60,7 +59,7 @@ set interesting_octet {1 2 3 4}
 #   interesting_octet 4 means the fourth octet (10)  #
 # ############### END OF THE EXAMPLE #################
 
-array set subnet_table {
+array set mag_num_table {
   0 256
   1 128
   2 64
@@ -122,7 +121,7 @@ if {$mask > 0 && ($mask < 8)} {
 
 
 set tmp_magic_number [expr $mask - $low_limit]
-set magic_number $subnet_table($tmp_magic_number)
+set magic_number $mag_num_table($tmp_magic_number)
 puts "Magic number is \"$magic_number\""
 
 set incr_of_magic_number [findIncrementsOfNumber $magic_number]
@@ -186,7 +185,7 @@ if {$interesting_octet == 3} {
 
 if {$interesting_octet == 3} {
   puts "i'm here. "
-  set network_address [lreplace $ip_address 2 2 0]
+  set network_address [lreplace $ip_address 2 2 $smallest]
   set network_address [lreplace $network_address 3 3 0 ]
   set network_address [string map {" " .} $network_address]
   puts "Network address is \"$network_address\""
