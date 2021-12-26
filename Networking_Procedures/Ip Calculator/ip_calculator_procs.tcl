@@ -261,3 +261,8 @@ proc calculateAvailableIps {int_oct net_add biggest} {
     }
   }
 }
+
+proc commify {num {sep .}} {
+    while {[regsub {^([-+]?\d+)(\d\d\d)} $num "\\1$sep\\2" num]} {}
+    return $num
+}

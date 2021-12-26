@@ -5,6 +5,7 @@ proc calculateNetworks {ip mask} {
   source /home/nionios/TclScripts/Networking_Procedures/Ip\ Calculator/ip_calculator_procs.tcl
   source /home/nionios/TclScripts/Networking_Procedures/decimal_to_binary_format.tcl
   source /home/nionios/TclScripts/Networking_Procedures/sub_mask_to_binary.tcl
+  source /home/nionios/TclScripts/Networking_Procedures/find_number_of_hosts.tcl
 
   set ip [splitIpToDot $ip]
   puts "Ip address is [string map {" " .} $ip] "
@@ -93,5 +94,9 @@ proc calculateNetworks {ip mask} {
   puts "Broadcast address is: $broadcast_address"
 
   calculateAvailableIps $interesting_octet $network_address $biggest
+
+  set number_of_usable_hosts [findNumberOfHosts $mask]
+  set number_of_usable_hosts [commify $number_of_usable_hosts]
+  puts "Number of usable hosts is: $number_of_usable_hosts"
 }
-calculateNetworks 192.168.10.10 20
+calculateNetworks 192.168.10.10 22
