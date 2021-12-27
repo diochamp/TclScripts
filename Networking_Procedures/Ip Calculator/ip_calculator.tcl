@@ -81,6 +81,28 @@ proc calculateNetworks {ip mask} {
   set smallest "null" ; # To be used for network address
   set biggest 0 ; # To be used for broadcast address
 
+# Having found the magic number, next step is to find where in between the
+# increments of magic number is the $octet_to_compare located.
+# That, in turn, will help us calculate the network and broadcast address.
+
+# Example1:
+# Ip is: 192.168.10.10, Subnet mask is: 26 ( 192.168.10.10/26 )
+# Magic number = 64
+# Octet to compare = 10 (the decimal in 4th octet of ip address)
+# Increments of magic number are: 0 64 128 192 256
+# Octet to compare is > 0 (the smallest) and < 64 (the biggest)
+# So network address will be x.x.x.0,next network will be x.x.x.64 and
+# broadcast address will be x.x.x.63 (the biggest -1)
+
+# Example2:
+# Ip is 192.168.85.10, Subnet mask is 20 ( 192.168.10.10/20)
+# Magic number = 16
+# Octet to compare = 85 (the decimal in 3rd octet of ip address)
+# Increments of magic number are: 0 16 32 48 64 80 96 112 128 .......
+# Octet to comprare is > 80 (the smallest) and < 96 (the biggest)
+# Network address will be x.x.80.x, next network will be x.x.96.x and
+# broadcast address will be x.x.95.x (one ip less than next network address)
+
   set biggest [calculateBiggest $interesting_octet $incr_of_magic_number $octet_to_compare]
   puts "Biggest is: $biggest"
 
@@ -99,4 +121,4 @@ proc calculateNetworks {ip mask} {
   set number_of_usable_hosts [commify $number_of_usable_hosts]
   puts "Number of usable hosts is: $number_of_usable_hosts"
 }
-calculateNetworks 192.168.10.10 22
+calculateNetworks 192.168.85.10 20
