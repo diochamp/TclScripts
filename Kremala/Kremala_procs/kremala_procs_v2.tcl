@@ -11,7 +11,6 @@ proc kremalaArray {} {
     Teams {Olimpiakos Panathinaikos Aek Mpaok}
     Countries {Greece Italy Spain Germany}
     Covid {Vaccine Lockdown Mask Socialdistance}
-    Spray-19 {Pseka Psekasmenos Psekastiras Psekastiko}
   }
   # parray kremala
   return [array get kremala]
